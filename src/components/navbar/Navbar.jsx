@@ -76,13 +76,13 @@ const Navbar = () => {
                         <NavLink to="/services">Available Cars</NavLink>
                     {user ? (
                         <>
-                                <button onClick={logOut} className="text-red-600">
+                                <button onClick={logOut} className="text-red-600 font-bold">
                                     Logout
                                 </button>
                         </>
                     ) : (
                         <li>
-                            <NavLink to="/login">Login</NavLink>
+                            <NavLink className="font-bold" to="/login">Login</NavLink>
                         </li>
                     )}
                 </ul>
