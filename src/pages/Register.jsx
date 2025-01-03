@@ -1,32 +1,37 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import registerLottie from "../assets/lootie/register.json";
 import Lottie from 'lottie-react';
-import Swal from 'sweetalert2'; // SweetAlert2 ইম্পোর্ট
+import registerLottie from "../assets/lootie/register.json";
+import Swal from 'sweetalert2';
+import AuthContext from '../context/AuthContext/AuthContext';
 
 const Register = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        photoUrl: '',
-    });
+
+    const { createUser } = useContext(AuthContext);
+
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-    };
-
-    const validate = () => {
+    const validate = (formData) => {
         const newErrors = {};
-        if (!formData.name) newErrors.name = "Name is required.";
-        if (!formData.email) newErrors.email = "Email is required.";
-        if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Email is invalid.";
-        if (!formData.password) newErrors.password = "Password is required.";
-        if (formData.password.length < 6) newErrors.password = "Password must be at least 6 characters.";
-        if (!formData.photoUrl) newErrors.photoUrl = "Photo URL is required.";
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[@#$%^&+=]).{6,}$/;
+
+        if (!formData.name) {
+            newErrors.name = "Name is required.";
+        }
+
+        if (!formData.email) {
+            newErrors.email = "Email is required.";
+        }
+
+        if (!formData.password || !passwordRegex.test(formData.password)) {
+            newErrors.password =
+                "Password must be at least 6 characters, include 1 uppercase letter, and 1 special character.";
+        }
+
+        if (!formData.photoUrl) {
+            newErrors.photoUrl = "Photo URL is required.";
+        }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -34,17 +39,30 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
 
-        if (validate()) {
-            // SweetAlert2 success message
-            Swal.fire({
-                title: 'Registration Successful!',
-                text: 'You can now login with your credentials.',
-                icon: 'success',
-                confirmButtonText: 'Go to Login',
-            }).then(() => {
-                navigate('/login');
-            });
+        if (validate(data)) {
+            createUser(data.email, data.password)
+                .then((result) => {
+                    console.log(result.user);
+                    Swal.fire({
+                        title: 'Registration Successful!',
+                        text: 'You can now login with your credentials.',
+                        icon: 'success',
+                        confirmButtonText: 'Go to Login',
+                    }).then(() => {
+                        navigate('/');
+                    });
+                })
+                .catch((error) => {
+                    console.error(error.message);
+                    Swal.fire({
+                        title: 'Registration Failed!',
+                        text: error.message,
+                        icon: 'error',
+                    });
+                });
         }
     };
 
@@ -64,10 +82,8 @@ const Register = () => {
                             <input
                                 type="text"
                                 name="name"
-                                value={formData.name}
-                                onChange={handleChange}
                                 placeholder="Enter your name"
-                                className="input input-bordered input-primary w-full px-4 py-3 rounded-md border-2 border-red-500 focus:ring-2 focus:ring-red-500"
+                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-red-200 border-red-400"
                             />
                             {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                         </div>
@@ -78,10 +94,8 @@ const Register = () => {
                             <input
                                 type="email"
                                 name="email"
-                                value={formData.email}
-                                onChange={handleChange}
                                 placeholder="Enter your email"
-                                className="input input-bordered input-primary w-full px-4 py-3 rounded-md border-2 border-red-500 focus:ring-2 focus:ring-red-500"
+                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-red-200 border-red-400"
                             />
                             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                         </div>
@@ -92,10 +106,8 @@ const Register = () => {
                             <input
                                 type="password"
                                 name="password"
-                                value={formData.password}
-                                onChange={handleChange}
                                 placeholder="Enter your password"
-                                className="input input-bordered input-primary w-full px-4 py-3 rounded-md border-2 border-red-500 focus:ring-2 focus:ring-red-500"
+                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-red-200 border-red-400"
                             />
                             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
                         </div>
@@ -106,17 +118,23 @@ const Register = () => {
                             <input
                                 type="url"
                                 name="photoUrl"
-                                value={formData.photoUrl}
-                                onChange={handleChange}
                                 placeholder="Enter your photo URL"
-                                className="input input-bordered input-primary w-full px-4 py-3 rounded-md border-2 border-red-500 focus:ring-2 focus:ring-red-500"
+                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-red-200 border-red-400"
                             />
                             {errors.photoUrl && <p className="text-red-500 text-xs mt-1">{errors.photoUrl}</p>}
                         </div>
                         <div className="form-control mt-6">
-                            <button type="submit" className="btn btn-danger w-full py-3 text-lg rounded-md bg-red-600 text-white hover:bg-red-700">Register</button>
+                            <button type="submit" className="btn btn-danger w-full py-3 text-lg rounded-md bg-red-600 text-white hover:bg-red-700">
+                                Register
+                            </button>
                         </div>
                     </form>
+                    <p className="mt-4 text-sm text-center text-gray-600">
+                        you have an account?{' '}
+                        <a href="/login" className="text-red-600 hover:underline">
+                            login
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
