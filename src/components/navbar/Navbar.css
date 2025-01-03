@@ -6,7 +6,6 @@
     border: 2px solid #e11d48; /* Red border */
     padding: 4px 8px;
     border-radius: 8px;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
 }
 
@@ -41,9 +40,12 @@ body.dark {
 body.dark .navbar {
     background-color: #2d3748;
 }
+body.dark .footer {
+    background-color: #2d3748;
+}
 
 body.dark .navbar a {
-    color: white;
+    color: #e11d48;
 }
 
 body.dark .menu a:hover {

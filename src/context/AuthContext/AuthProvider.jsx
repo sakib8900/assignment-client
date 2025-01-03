@@ -32,15 +32,6 @@ const AuthProvider = ({ children }) => {
     const logOut = () => {
         setLoading(true);
         return signOut(auth)
-            .then(() => {
-                setUser(null); // Clear user state
-            })
-            .catch((error) => {
-                console.error("Error during logout:", error.message);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
     };
 
     // Google Sign-In

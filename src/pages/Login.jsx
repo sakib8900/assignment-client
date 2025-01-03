@@ -4,29 +4,37 @@ import { useContext } from "react";
 import AuthContext from "../context/AuthContext/AuthContext";
 import SocialLogin from "./SocialLogin";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const Login = () => {
-
-    const { loginInUser } = useContext(AuthContext)
+    const { loginInUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
-    
+
         const { email, password } = data;
         loginInUser(email, password)
-            .then(result => {
-                console.log('Sign in successful:', result.user);
-                navigate("/");
+            .then((result) => {
+                console.log("Sign in successful:", result.user);
+
+                // Show SweetAlert confirmation
+                Swal.fire({
+                    title: "Login Successful!",
+                    text: `Welcome back, ${result.user.name}!`,
+                    icon: "success",
+                    confirmButtonText: "Continue",
+                    confirmButtonColor: "#e11d48",
+                }).then(() => {
+                    navigate("/"); // Navigate to the home page after confirmation
+                });
             })
-            .catch(error => {
-                console.error('Error during login:', error);
+            .catch((error) => {
+                console.error("Error during login:", error);
             });
     };
-    
-
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -62,9 +70,9 @@ const Login = () => {
                             Login
                         </button>
                     </form>
-                    <SocialLogin></SocialLogin>
+                    <SocialLogin />
                     <p className="mt-4 text-sm text-center text-gray-600">
-                        Don't have an account?{' '}
+                        Don't have an account?{" "}
                         <a href="/register" className="text-red-600 hover:underline">
                             Register
                         </a>

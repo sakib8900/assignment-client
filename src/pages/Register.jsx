@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import registerLottie from "../assets/lootie/register.json";
 import Swal from 'sweetalert2';
@@ -83,7 +83,7 @@ const Register = () => {
                                 type="text"
                                 name="name"
                                 placeholder="Enter your name"
-                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-red-200 border-red-400"
+                                className="input input-bordered input-primary w-full px-4 py-3 rounded-md border-2 border-red-500 focus:ring-0 focus:border-red-500 focus:outline-none"
                             />
                             {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                         </div>
@@ -95,7 +95,7 @@ const Register = () => {
                                 type="email"
                                 name="email"
                                 placeholder="Enter your email"
-                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-red-200 border-red-400"
+                                className="input input-bordered input-primary w-full px-4 py-3 rounded-md border-2 border-red-500 focus:ring-0 focus:border-red-500 focus:outline-none"
                             />
                             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                         </div>
@@ -107,7 +107,7 @@ const Register = () => {
                                 type="password"
                                 name="password"
                                 placeholder="Enter your password"
-                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-red-200 border-red-400"
+                                className="input input-bordered input-primary w-full px-4 py-3 rounded-md border-2 border-red-500 focus:ring-0 focus:border-red-500 focus:outline-none"
                             />
                             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
                         </div>
@@ -119,7 +119,7 @@ const Register = () => {
                                 type="url"
                                 name="photoUrl"
                                 placeholder="Enter your photo URL"
-                                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-red-200 border-red-400"
+                                className="input input-bordered input-primary w-full px-4 py-3 rounded-md border-2 border-red-500 focus:ring-0 focus:border-red-500 focus:outline-none"
                             />
                             {errors.photoUrl && <p className="text-red-500 text-xs mt-1">{errors.photoUrl}</p>}
                         </div>
@@ -131,9 +131,9 @@ const Register = () => {
                     </form>
                     <p className="mt-4 text-sm text-center text-gray-600">
                         you have an account?{' '}
-                        <a href="/login" className="text-red-600 hover:underline">
+                        <Link href="/login" className="text-red-600 hover:underline">
                             login
-                        </a>
+                        </Link>
                     </p>
                 </div>
             </div>
