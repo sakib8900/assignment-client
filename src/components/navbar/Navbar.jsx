@@ -48,7 +48,7 @@ const Navbar = () => {
                         className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-gray-100 rounded-box w-52"
                     >
                             <NavLink to="/">Home</NavLink>
-                            <NavLink to="/services">Available Cars</NavLink>
+                            <NavLink to="/availableCars">Available Cars</NavLink>
                         {user ? (
                             <>
                                     <button onClick={handleLogOut} className="text-red-600 font-bold">
@@ -73,7 +73,7 @@ const Navbar = () => {
                 <ul className="menu menu-horizontal gap-4">
                         <NavLink to="/">Home</NavLink>
 
-                        <NavLink to="/services">Available Cars</NavLink>
+                        <NavLink to="/availableCars">Available Cars</NavLink>
                     {user ? (
                         <>
                                 <button onClick={logOut} className="text-red-600 font-bold">
