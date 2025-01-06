@@ -1,25 +1,26 @@
 import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
-import logo from "../../assets/logo/logo.jpeg"; // Logo import
-import profileImage from "../../assets/logo/profile.jpeg"; // Profile image import
+import logo from "../../assets/logo/logo.jpeg";
+import profileImage from "../../assets/logo/profile.jpeg";
 import { IoMoon, IoSunny } from "react-icons/io5";
-import AuthContext from "../../context/AuthContext/AuthContext"; // Import AuthContext
+import AuthContext from "../../context/AuthContext/AuthContext";
 import "./Navbar.css";
 
 const Navbar = () => {
-    const { user, logOut } = useContext(AuthContext); // Access user and logOut function from context
-    const [dark, setDark] = useState(false); // Dark mode state
+    const { user, logOut } = useContext(AuthContext);
+    const [dark, setDark] = useState(false);
 
     const darkModeHandler = () => {
         setDark(!dark);
         document.body.classList.toggle("dark");
     };
-
+    // console.log(user);
+    // console.log(user);
     const handleLogOut = () => {
         logOut()
-        .then(() => {
-            console.log('success logout');
-        })
+            .then(() => {
+                console.log('success logout');
+            })
     };
 
     return (
@@ -47,16 +48,16 @@ const Navbar = () => {
                         tabIndex={0}
                         className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-gray-100 rounded-box w-52"
                     >
-                            <NavLink to="/">Home</NavLink>
-                            <NavLink to="/availableCars">Available Cars</NavLink>
+                        <NavLink to="/">Home</NavLink>
+                        <NavLink to="/availableCars">Available Cars</NavLink>
                         {user ? (
                             <>
-                                    <button onClick={handleLogOut} className="text-red-600 font-bold">
-                                        Logout
-                                    </button>
+                                <button onClick={handleLogOut} className="text-red-600 font-bold">
+                                    Logout
+                                </button>
                             </>
                         ) : (
-                                <NavLink to="/login">Login</NavLink>
+                            <NavLink to="/login">Login</NavLink>
                         )}
                     </ul>
                 </div>
@@ -71,14 +72,14 @@ const Navbar = () => {
             {/* Navbar Center */}
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal gap-4">
-                        <NavLink to="/">Home</NavLink>
+                    <NavLink to="/">Home</NavLink>
 
-                        <NavLink to="/availableCars">Available Cars</NavLink>
+                    <NavLink to="/availableCars">Available Cars</NavLink>
                     {user ? (
                         <>
-                                <button onClick={logOut} className="text-red-600 font-bold">
-                                    Logout
-                                </button>
+                            <button onClick={logOut} className="text-red-600 font-bold">
+                                Logout
+                            </button>
                         </>
                     ) : (
                         <li>
@@ -99,21 +100,26 @@ const Navbar = () => {
                 {user && (
                     <div className="dropdown relative z-20">
                         <label tabIndex={0} className="btn btn-ghost">
-                            <img src={user.photoURL} alt="Profile" className="w-10 h-10 rounded-full border border-gray-300" />
+                            <img
+                                src={user?.photoURL || profileImage}
+                                alt=""
+                                className="w-10 h-10 rounded-full border border-gray-300"
+                            />
                         </label>
                         <ul
                             tabIndex={0}
                             className="menu dropdown-content absolute right-0 mt-3 p-2 shadow bg-gray-100 rounded-box w-52"
                         >
-                                <NavLink to="/add-car">Add Car</NavLink>
-                                <NavLink to="/my-cars">My Cars</NavLink>
-                                <NavLink to="/my-bookings">My Bookings</NavLink>
-                                <button onClick={logOut} className="text-red-600 font-bold">
-                                    Logout
-                                </button>
+                            <NavLink to="/addCar">Add Car</NavLink>
+                            <NavLink to="/myCars">My Cars</NavLink>
+                            <NavLink to="/myBookings">My Bookings</NavLink>
+                            <button onClick={handleLogOut} className="text-red-600 font-bold">
+                                Logout
+                            </button>
                         </ul>
                     </div>
                 )}
+
             </div>
         </div>
     );

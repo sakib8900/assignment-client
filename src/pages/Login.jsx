@@ -32,8 +32,12 @@ const Login = () => {
                 });
             })
             .catch((error) => {
-                console.error("Error during login:", error);
-            });
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Failed',
+                    text: error.message,
+                });
+            });                        
     };
 
     return (

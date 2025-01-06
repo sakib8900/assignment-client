@@ -3,15 +3,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import registerLottie from "../assets/lootie/register.json";
 import Swal from 'sweetalert2';
+import { getAuth, updateProfile } from "firebase/auth";
 import AuthContext from '../context/AuthContext/AuthContext';
 
 const Register = () => {
-
     const { createUser } = useContext(AuthContext);
-
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+    const auth = getAuth();
 
+    // Validation function
     const validate = (formData) => {
         const newErrors = {};
         const passwordRegex = /^(?=.*[A-Z])(?=.*[@#$%^&+=]).{6,}$/;
@@ -37,6 +38,7 @@ const Register = () => {
         return Object.keys(newErrors).length === 0;
     };
 
+    // Form submission handler
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
@@ -44,19 +46,34 @@ const Register = () => {
 
         if (validate(data)) {
             createUser(data.email, data.password)
-                .then((result) => {
-                    console.log(result.user);
-                    Swal.fire({
-                        title: 'Registration Successful!',
-                        text: 'You can now login with your credentials.',
-                        icon: 'success',
-                        confirmButtonText: 'Go to Login',
-                    }).then(() => {
-                        navigate('/');
-                    });
+                .then(() => {
+                    const user = auth.currentUser;
+
+                    updateProfile(user, {
+                        displayName: data.name,
+                        photoURL: data.photoUrl,
+                    })
+                        .then(() => {
+                            Swal.fire({
+                                title: 'Registration Successful!',
+                                text: 'Your profile has been updated.',
+                                icon: 'success',
+                                confirmButtonText: 'Go to Login',
+                            }).then(() => {
+                                navigate('/');
+                            });
+                        })
+                        .catch((error) => {
+                            console.error("Error updating user profile:", error.message);
+                            Swal.fire({
+                                title: 'Profile Update Failed!',
+                                text: error.message,
+                                icon: 'error',
+                            });
+                        });
                 })
                 .catch((error) => {
-                    console.error(error.message);
+                    console.error("Error during registration:", error.message);
                     Swal.fire({
                         title: 'Registration Failed!',
                         text: error.message,
@@ -130,9 +147,9 @@ const Register = () => {
                         </div>
                     </form>
                     <p className="mt-4 text-sm text-center text-gray-600">
-                        you have an account?{' '}
-                        <Link href="/login" className="text-red-600 hover:underline">
-                            login
+                        Already have an account?{' '}
+                        <Link to="/login" className="text-red-600 hover:underline">
+                            Login
                         </Link>
                     </p>
                 </div>
@@ -142,3 +159,6 @@ const Register = () => {
 };
 
 export default Register;
+
+
+// Password@1

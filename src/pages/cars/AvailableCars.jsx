@@ -74,10 +74,10 @@ const AvailableCars = () => {
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
           >
-            <option value="newest">Date Added: Newest First</option>
-            <option value="oldest">Date Added: Oldest First</option>
-            <option value="lowest">Price: Lowest First</option>
-            <option value="highest">Price: Highest First</option>
+            <option value="newest">Date Added: Newest</option>
+            <option value="oldest">Date Added: Oldest</option>
+            <option value="lowest">Price: Lowest</option>
+            <option value="highest">Price: Highest</option>
           </select>
         </div>
       </div>
