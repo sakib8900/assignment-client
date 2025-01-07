@@ -7,11 +7,15 @@ const AvailableCars = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [view, setView] = useState("grid");
   const [sortOption, setSortOption] = useState("newest");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("http://localhost:5000/cars") // Replace with your API URL
       .then((res) => res.json())
-      .then((data) => setCars(data))
+      .then((data) => {
+        setCars(data)
+        setLoading(false)
+      })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
@@ -27,9 +31,9 @@ const AvailableCars = () => {
   // Sort cars
   const sortedCars = filteredCars.sort((a, b) => {
     if (sortOption === "newest")
-      return new Date(b.date_posted) - new Date(a.date_posted);
+      return new Date(b.post_date) - new Date(a.post_date);
     if (sortOption === "oldest")
-      return new Date(a.date_posted) - new Date(b.date_posted);
+      return new Date(a.post_date) - new Date(b.post_date);
     if (sortOption === "lowest") return a.daily_price - b.daily_price;
     if (sortOption === "highest") return b.daily_price - a.daily_price;
     return 0;

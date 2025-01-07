@@ -3,12 +3,14 @@ import loginLottie from "../assets/lootie/login.json";
 import { useContext } from "react";
 import AuthContext from "../context/AuthContext/AuthContext";
 import SocialLogin from "./SocialLogin";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2"; // Import SweetAlert2
 
 const Login = () => {
     const { loginInUser } = useContext(AuthContext);
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from;
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -23,12 +25,12 @@ const Login = () => {
                 // Show SweetAlert confirmation
                 Swal.fire({
                     title: "Login Successful!",
-                    text: `Welcome back, ${result.user.name}!`,
+                    text: `Welcome back, ${result.user.name || result.user.displayName}!`,
                     icon: "success",
                     confirmButtonText: "Continue",
                     confirmButtonColor: "#e11d48",
                 }).then(() => {
-                    navigate("/"); // Navigate to the home page after confirmation
+                    navigate(from, { replace: true });
                 });
             })
             .catch((error) => {

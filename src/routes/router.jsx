@@ -12,6 +12,7 @@ import PrivateRoute from "../utilitis/PrivateRoute";
 import AddCar from "../form/AddCar";
 import Booking from "../form/Booking";
 import MyBooking from "../pages/MyBooking";
+import MyCars from "../pages/cars/MyCars";
 
 const router = createBrowserRouter([
   {
@@ -36,11 +37,17 @@ const router = createBrowserRouter([
       },
       {
         path: "/myBookings",
-        element: <MyBooking></MyBooking>
+        element: <PrivateRoute>
+          <MyBooking></MyBooking>
+        </PrivateRoute>
       },
       {
         path: "/addCar",
         element: <AddCar></AddCar>
+      },
+      {
+        path: "/myCars",
+        element: <MyCars></MyCars>
       },
       {
         path: "/cars/:id",

@@ -21,15 +21,15 @@ const RecentCar = ({ car }) => {
       {/* Availability Badge */}
       <button
         className={`inline-block px-3 py-1 mt-2 text-sm font-medium rounded-full ${
-          availability === "Available"
+          availability === true
             ? "bg-green-500 text-white"
             : "bg-red-500 text-white"
         }`}
       >
-        {availability}
+        {availability === true ? "Available" : "Unavailable"}
       </button>
     </div>
   );
 };
 
-export default RecentCar
+export default RecentCar;

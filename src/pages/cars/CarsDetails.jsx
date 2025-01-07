@@ -1,118 +1,198 @@
-// CarsDetails.js
-import React, { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import useAuth from "../../hooks/useAuth";
+import { FaCarSide, FaCalendarAlt } from "react-icons/fa";
 
-const CarsDetails = () => {
-  const { car_image, model, daily_price, location, features, description, date_posted, _id } =
-    useLoaderData();
+const CarDetails = () => {
+  const { id } = useParams();
+  const { user } = useAuth();
+  const [car, setCar] = useState(null);
+  const [startDateTime, setStartDateTime] = useState("");
+  const [endDateTime, setEndDateTime] = useState("");
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  const [showModal, setShowModal] = useState(false);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  useEffect(() => {
+    // Fetch car details based on the car ID
+    fetch(`http://localhost:5000/cars/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setCar(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, [id]);
 
-  const handleModalToggle = () => setShowModal(!showModal);
+  const handleBooking = () => {
+    if (!user) {
+      Swal.fire(
+        "Please login",
+        "You need to be logged in to book a car",
+        "warning"
+      );
+      return;
+    }
 
-  const handleBooking = async () => {
-    const booking = {
-      carId: _id,
-      userId: "user_id_placeholder", // Replace with actual user ID
-      startDate,
-      endDate,
-      totalPrice: daily_price * (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24),
+    if (!startDateTime || !endDateTime) {
+      Swal.fire(
+        "Missing Information",
+        "Please select start and end dates for your booking.",
+        "error"
+      );
+      return;
+    }
+
+    // Booking request
+    const bookingDetails = {
+      userEmail: user.email,
+      carId: car._id,
+      carModel: car.model,
+      carImage: car.car_image,
+      startDateTime,
+      endDateTime,
+      dailyPrice: car.daily_price,
+      totalPrice: calculateTotalPrice(),
     };
 
-    await fetch("http://localhost:5000/bookings", {
+    fetch("http://localhost:5000/bookings", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(booking),
-    });
-
-    setShowModal(false);
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bookingDetails),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          Swal.fire(
+            "Booking Successful",
+            "Your booking has been confirmed!",
+            "success"
+          );
+          navigate("/myBookings");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        Swal.fire("Error", "An error occurred while booking the car.", "error");
+      });
   };
+
+  const calculateTotalPrice = () => {
+    const start = new Date(startDateTime);
+    const end = new Date(endDateTime);
+    const days = Math.ceil((end - start) / (1000 * 3600 * 24)); // Calculate the number of days
+    return days * car.daily_price;
+  };
+
+  if (loading) {
+    return <div className="text-center mt-20 text-lg">Loading...</div>;
+  }
+
+  if (!car) {
+    return <div className="text-center mt-20 text-lg">Car not found!</div>;
+  }
 
   return (
     <div className="container mx-auto p-5">
-      <div className="bg-white p-5 rounded shadow-lg flex flex-col md:flex-row space-y-5 md:space-y-0 md:space-x-8">
-        <div className="md:w-1/2 flex items-center">
-          <img src={car_image} alt={model} className="w-full h-auto max-h-96 object-contain rounded" />
+      <div className="mb-5 text-center">
+        <h2 className="text-3xl font-bold">{car.model}</h2>
+        <div className="text-xl font-semibold text-gray-600">
+          ${car.daily_price} / day
         </div>
+      </div>
 
-        <div className="md:w-1/2">
-          <h2 className="text-2xl font-bold mb-2">{model}</h2>
-          <p className="text-lg text-gray-600 mb-1">
-            <span className="font-semibold">Price Per Day:</span> ${daily_price}
-          </p>
-          <p className="text-sm text-gray-600 mb-1">
-            <span className="font-semibold">Location:</span> {location}
-          </p>
-          <p className="text-sm text-gray-400 mb-4">
-            <span className="font-semibold">Posted on:</span> {new Date(date_posted).toDateString()}
-          </p>
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Car Image */}
+        <img
+          src={car.car_image}
+          alt={car.model}
+          className="w-full lg:w-1/3 h-64 object-cover rounded-lg shadow-lg"
+        />
 
-          <h3 className="text-lg font-semibold mt-3">Features:</h3>
-          <ul className="list-disc ml-5 text-sm text-gray-600 space-y-1">
-            {features?.map((feature, idx) => (
-              <li key={idx}>{feature}</li>
-            ))}
-          </ul>
+        {/* Car Details */}
+        <div className="flex-1">
+          {/* Car Information */}
+          <div className="mb-4">
+            <h3 className="text-2xl font-semibold text-gray-800">Car Details</h3>
+            <p className="text-lg text-gray-600 mt-2">{car.description}</p>
+          </div>
 
-          <h3 className="text-lg font-semibold mt-3">Description:</h3>
-          <p className="text-sm text-gray-600">{description}</p>
-          <button
-            className="mt-3 px-3 py-1 bg-red-500 text-white rounded hover:bg-blue-600"
-            onClick={handleModalToggle}
-          >
-            Book Now
-          </button>
-
-          {showModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-              <div className="bg-white p-5 rounded shadow-lg w-96">
-                <h3 className="text-xl font-semibold mb-3">Confirm Your Booking</h3>
-
-                <div className="mb-3">
-                  <label className="block text-sm font-semibold">Start Date:</label>
-                  <input
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    className="mt-1 p-2 border border-gray-300 rounded w-full"
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="block text-sm font-semibold">End Date:</label>
-                  <input
-                    type="date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    className="mt-1 p-2 border border-gray-300 rounded w-full"
-                  />
-                </div>
-
-                <div className="flex justify-between">
-                  <button
-                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                    onClick={handleBooking}
-                  >
-                    Confirm Booking
-                  </button>
-                  <button
-                    className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-                    onClick={handleModalToggle}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
+          {/* Additional Details */}
+          <div className="mb-4">
+            <div className="flex items-center gap-2 text-gray-600">
+              <FaCarSide size={20} />
+              <span>{car.make} {car.model}</span>
             </div>
-          )}
+            <div className="flex items-center gap-2 text-gray-600 mt-2">
+              <FaCalendarAlt size={20} />
+              <span>Available for rent: {car.available_date}</span>
+            </div>
+          </div>
+
+          {/* Features */}
+          <div className="mb-4">
+            <h4 className="text-xl font-semibold text-gray-800">Features</h4>
+            <ul className="list-disc pl-5 mt-2 text-gray-600">
+              {car.features.map((feature, index) => (
+                <li key={index}>{feature}</li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Booking Information */}
+          <div className="mb-4">
+            <h4 className="text-xl font-semibold text-gray-800">Booking Information</h4>
+            <div className="flex flex-col lg:flex-row gap-4 mt-2">
+              <input
+                type="datetime-local"
+                value={startDateTime}
+                onChange={(e) => setStartDateTime(e.target.value)}
+                className="border border-gray-300 p-2 rounded w-full lg:w-auto"
+              />
+              <input
+                type="datetime-local"
+                value={endDateTime}
+                onChange={(e) => setEndDateTime(e.target.value)}
+                className="border border-gray-300 p-2 rounded w-full lg:w-auto"
+              />
+            </div>
+          </div>
+
+          {/* Total Price & Booking Button */}
+          <div className="mt-6 flex flex-col lg:flex-row justify-between items-center gap-4">
+            <div className="text-xl font-semibold text-gray-600">
+              Total Price: ${calculateTotalPrice()}
+            </div>
+            <button
+              onClick={handleBooking}
+              className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 w-full lg:w-auto"
+            >
+              Book Now
+            </button>
+          </div>
+
+          {/* User Info */}
+          <div className="flex items-center mt-8">
+            <img
+              src={car.user.photoURL}
+              alt="User Avatar"
+              className="w-12 h-12 object-cover rounded-full"
+            />
+            <div className="ml-4">
+              <p className="text-lg font-semibold">{car.user.displayName}</p>
+              <p className="text-sm text-gray-600">{car.user.email}</p>
+              <p className="text-sm text-gray-500">
+                Posted on {new Date(car.post_date).toLocaleDateString()}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default CarsDetails;
+export default CarDetails;
