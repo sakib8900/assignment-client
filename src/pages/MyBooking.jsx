@@ -3,6 +3,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import useAuth from '../hooks/useAuth';
 import { Helmet } from 'react-helmet';
+import Loading from '../utilitis/Loading';
 
 const MyBooking = () => {
     const [bookings, setBookings] = useState([]);
@@ -14,7 +15,7 @@ const MyBooking = () => {
     useEffect(() => {
         if (user?.email) {
             setLoading(true);
-            fetch(`http://localhost:5000/bookings?userEmail=${user.email}`)
+            fetch(`https://assignment-11-server-one-lemon.vercel.app/bookings?userEmail=${user.email}`)
                 .then((res) => res.json())
                 .then((data) => {
                     const filteredBookings = data.filter(booking => booking.userEmail === user.email);
@@ -40,7 +41,7 @@ const MyBooking = () => {
             cancelButtonText: 'No, keep it',
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:5000/bookings/${id}`, {
+                fetch(`https://assignment-11-server-one-lemon.vercel.app/bookings/${id}`, {
                     method: 'DELETE',
                 })
                     .then((res) => res.json())
@@ -61,7 +62,7 @@ const MyBooking = () => {
     };
 
     const handleDateUpdate = () => {
-        fetch(`http://localhost:5000/bookings/${selectedBooking._id}`, {
+        fetch(`https://assignment-11-server-one-lemon.vercel.app/bookings/${selectedBooking._id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ startDateTime: newStartDateTime, endDateTime: newEndDateTime }),
@@ -81,6 +82,9 @@ const MyBooking = () => {
             });
         setSelectedBooking(null);
     };
+    if(loading){
+        return <Loading></Loading>
+    }
 
     return (
         <div className="container mx-auto p-5">
@@ -117,18 +121,18 @@ const MyBooking = () => {
                                     <td className="px-6 py-4 border-b border-gray-300">${totalPrice}</td>
                                     <td className="px-6 py-4 border-b border-gray-300 flex items-center gap-2">
                                         <div className='flex flex-col gap-6'>
-                                        <button
-                                            onClick={() => handleCancelBooking(_id)}
-                                            className="text-red-500 hover:text-red-700"
-                                        >
-                                            <FaTrash size={20} />
-                                        </button>
-                                        <button
-                                            onClick={() => handleModifyBooking({ _id, startDateTime, endDateTime })}
-                                            className="text-blue-500 hover:text-blue-700"
-                                        >
-                                            <FaEdit size={20} />
-                                        </button>
+                                            <button
+                                                onClick={() => handleCancelBooking(_id)}
+                                                className="text-red-500 hover:text-red-700"
+                                            >
+                                                <FaTrash size={20} />
+                                            </button>
+                                            <button
+                                                onClick={() => handleModifyBooking({ _id, startDateTime, endDateTime })}
+                                                className="text-blue-500 hover:text-blue-700"
+                                            >
+                                                <FaEdit size={20} />
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>

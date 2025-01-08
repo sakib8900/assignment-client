@@ -14,7 +14,7 @@ const CarDetails = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:5000/cars/${id}`)
+    fetch(`https://assignment-11-server-one-lemon.vercel.app/cars/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setCar(data);
@@ -57,7 +57,7 @@ const CarDetails = () => {
       totalPrice: calculateTotalPrice(),
     };
 
-    fetch("http://localhost:5000/bookings", {
+    fetch("https://assignment-11-server-one-lemon.vercel.app/bookings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(bookingDetails),

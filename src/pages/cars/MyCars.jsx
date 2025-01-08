@@ -17,7 +17,7 @@ const MyCars = () => {
     // Fetch user cars
     useEffect(() => {
         if (user?.email) {
-            fetch(`http://localhost:5000/cars?userEmail=${user.email}`)
+            fetch(`https://assignment-11-server-one-lemon.vercel.app/cars?userEmail=${user.email}`)
                 .then((res) => res.json())
                 .then((data) => {
                     const filteredCars = data.filter(
@@ -71,7 +71,7 @@ const MyCars = () => {
         };
 
         axios
-            .put(`http://localhost:5000/cars/${selectedCar._id}`, updatedCar)
+            .put(`https://assignment-11-server-one-lemon.vercel.app/cars/${selectedCar._id}`, updatedCar)
             .then(() => {
                 setCars(
                     cars.map((car) =>
@@ -113,7 +113,7 @@ const MyCars = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 axios
-                    .delete(`http://localhost:5000/cars/${id}`)
+                    .delete(`https://assignment-11-server-one-lemon.vercel.app/cars/${id}`)
                     .then(() => {
                         setCars(cars.filter((car) => car._id !== id));
                         Swal.fire(

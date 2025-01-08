@@ -57,7 +57,7 @@ const router = createBrowserRouter([
         element: <PrivateRoute>
           <CarsDetails></CarsDetails>
         </PrivateRoute>,
-        loader: ({ params }) => fetch(`http://localhost:5000/cars/${params.id}`)
+        loader: ({ params }) => fetch(`https://assignment-11-server-one-lemon.vercel.app/cars/${params.id}`)
       },
       {
         path: "*",

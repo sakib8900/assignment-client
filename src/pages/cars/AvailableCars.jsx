@@ -12,7 +12,7 @@ const AvailableCars = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/cars")
+    fetch("https://assignment-11-server-one-lemon.vercel.app/cars")
       .then((res) => res.json())
       .then((data) => {
         setCars(data);
