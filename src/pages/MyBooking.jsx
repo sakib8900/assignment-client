@@ -87,7 +87,7 @@ const MyBooking = () => {
             <Helmet>
                 <title>Rent A Car || My Bookings</title>
             </Helmet>
-            <h2 className="text-3xl font-bold mb-5 text-center">My Bookings</h2>
+            <h2 className="text-3xl font-bold mb-5 text-center">My Bookings Cars</h2>
             <div className="overflow-x-auto">
                 <table className="table w-full border-collapse border border-gray-200">
                     <thead className="bg-gray-200">
