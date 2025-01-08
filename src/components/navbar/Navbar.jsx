@@ -96,7 +96,7 @@ const Navbar = () => {
                     {dark ? <IoSunny /> : <IoMoon />}
                 </button>
 
-                {/* Profile & Logout Dropdown */}
+                {/* Profile & Dropdown */}
                 {user && (
                     <div className="dropdown relative z-20">
                         <label tabIndex={0} className="btn btn-ghost">

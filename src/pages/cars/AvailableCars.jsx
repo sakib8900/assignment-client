@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { MdViewModule, MdViewList } from "react-icons/md"; // Importing icons
+import { MdViewModule, MdViewList } from "react-icons/md";
 import AvailableCar from "./AvailableCar";
+import { Helmet } from "react-helmet";
+import Loading from "../../utilitis/Loading";
 
 const AvailableCars = () => {
   const [cars, setCars] = useState([]);
@@ -10,16 +12,19 @@ const AvailableCars = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/cars") // Replace with your API URL
+    fetch("http://localhost:5000/cars")
       .then((res) => res.json())
       .then((data) => {
-        setCars(data)
-        setLoading(false)
+        setCars(data);
+        setLoading(false);
       })
-      .catch((error) => console.error("Error fetching data:", error));
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      });
   }, []);
 
-  // search
+  // Search
   const filteredCars = cars.filter((car) => {
     return (
       car.model?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -39,9 +44,16 @@ const AvailableCars = () => {
     return 0;
   });
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="min-h-screen p-5">
-      {/* Search and Controls */}
+      <Helmet>
+        <title>Rent A Car || Available Cars</title>
+      </Helmet>
+      {/* Search */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-5">
         {/* Search Bar */}
         <input
@@ -49,7 +61,7 @@ const AvailableCars = () => {
           placeholder="Search by model, brand, or location..."
           className="border p-2 rounded w-full max-w-xs bg-gray-800 text-white mb-3 md:mb-0"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Updates search term
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
 
         {/* View & Sort */}
@@ -72,7 +84,7 @@ const AvailableCars = () => {
             <MdViewList size={24} />
           </button>
 
-          {/* Sorting Options */}
+          {/* Sorting */}
           <select
             className="border p-2 rounded bg-gray-800 text-white"
             value={sortOption}
@@ -86,7 +98,7 @@ const AvailableCars = () => {
         </div>
       </div>
 
-      {/* Cars Display */}
+      {/* Cars */}
       <div
         className={`grid gap-5 ${
           view === "grid"

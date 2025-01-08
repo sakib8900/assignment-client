@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import RecentCar from './RecentCar';
+import Loading from '../../utilitis/Loading';
 
 const RecentCars = () => {
     const [cars, setCars] = useState([])
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetch('http://localhost:5000/cars')
             .then(res => res.json())
-            .then(data => setCars(data.slice(0, 8)));
+            .then(data => {
+                setCars(data.slice(0, 8))
+                setLoading(false)
+            });
     }, []);
-    
+    if (loading) {
+        return <Loading></Loading>
+      }
     return (
         <div>
             <h2 className="text-3xl font-bold text-center mb-12">Recent Cars !</h2>

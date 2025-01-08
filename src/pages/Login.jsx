@@ -21,8 +21,6 @@ const Login = () => {
         loginInUser(email, password)
             .then((result) => {
                 console.log("Sign in successful:", result.user);
-
-                // Show SweetAlert confirmation
                 Swal.fire({
                     title: "Login Successful!",
                     text: `Welcome back, ${result.user.name || result.user.displayName}!`,

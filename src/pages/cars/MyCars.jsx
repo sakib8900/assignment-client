@@ -3,6 +3,8 @@ import { MdEdit, MdDelete } from "react-icons/md"; // Importing icons
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import Swal from 'sweetalert2';
+import { Helmet } from "react-helmet";
+import Loading from "../../utilitis/Loading";
 
 const MyCars = () => {
     const [cars, setCars] = useState([]);
@@ -60,14 +62,14 @@ const MyCars = () => {
         const updatedCar = {
             model: e.target.model.value,
             daily_price: parseFloat(e.target.daily_price.value),
-            availability: e.target.availability.value,
+            availability: e.target.availability.checked,
             registration_number: e.target.registration_number.value,
             features: e.target.features.value.split(",").map((feature) => feature.trim()),
             description: e.target.description.value,
             car_image: e.target.image_url.value,
             location: e.target.location.value,
         };
-    
+
         axios
             .put(`http://localhost:5000/cars/${selectedCar._id}`, updatedCar)
             .then(() => {
@@ -77,7 +79,7 @@ const MyCars = () => {
                     )
                 );
                 closeModal();
-    
+
                 // Show SweetAlert success message
                 Swal.fire({
                     icon: 'success',
@@ -95,7 +97,9 @@ const MyCars = () => {
                 });
             });
     };
-    
+    if (loading) {
+        return <Loading></Loading>
+      }
 
     // Delete car
     const handleDelete = (id) => {
@@ -129,9 +133,12 @@ const MyCars = () => {
             }
         });
     };
-    
+
     return (
         <div className="p-5">
+            <Helmet>
+                <title>Rent A Car || My Cars</title>
+            </Helmet>
             <h1 className="text-2xl font-bold mb-5">My Cars</h1>
             {/* Sorting Options */}
             <select
@@ -217,14 +224,17 @@ const MyCars = () => {
                             />
 
                             {/* Availability */}
-                            <select
-                                name="availability"
-                                defaultValue={selectedCar.availability || "Available"}
-                                className="select select-bordered w-full mb-4"
-                            >
-                                <option value="Available">Available</option>
-                                <option value="Unavailable">Unavailable</option>
-                            </select>
+                            <div className="mb-4 flex items-center">
+                                <label className="mr-2">Available</label>
+                                <input
+                                    type="checkbox"
+                                    name="availability"
+                                    defaultChecked={selectedCar.availability}
+                                    className="checkbox checkbox-primary"
+                                />
+                            </div>
+
+
 
                             {/* Vehicle Registration Number */}
                             <input

@@ -45,19 +45,21 @@ const ClientReview = () => {
             whileHover={{ scale: 1.1, rotate: 2 }}
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: review.id * 0.2 }}
+            transition={{ duration: 0.1, delay: review.id * 0.1 }}
           >
             <motion.img
               src={review.image}
               alt={review.name}
               className="w-20 h-20 rounded-full mb-4 shadow-lg"
               whileHover={{ scale: 1.2, rotate: 10 }}
+              transition={{ duration: 0.1 }}
             />
             <h3 className="text-lg font-semibold text-gray-800 mb-2">{review.name}</h3>
             <p className="text-sm text-gray-500 mb-4">{review.location}</p>
             <p className="text-center text-gray-700 italic">"{review.review}"</p>
           </motion.div>
         ))}
+
       </div>
     </animated.div>
   );

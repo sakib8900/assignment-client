@@ -18,7 +18,7 @@ const RecentCar = ({ car }) => {
       <p className="text-sm text-gray-400">${daily_price}/day</p>
       <p className="text-xs text-gray-500">Added: {date_posted}</p>
       <p className="text-xs text-gray-500">Count: {booking_count}</p>
-      {/* Availability Badge */}
+      {/* Availability tootgel*/}
       <button
         className={`inline-block px-3 py-1 mt-2 text-sm font-medium rounded-full ${
           availability === true

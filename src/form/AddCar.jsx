@@ -11,7 +11,7 @@ const AddCar = () => {
     daily_price: '',
     availability: true,
     registration_number: '',
-    features: [], // Initialize as an empty array
+    features: [],
     description: '',
     booking_count: 0,
     car_image: '',
@@ -29,7 +29,6 @@ const AddCar = () => {
 
   const handleFeaturesChange = (e) => {
     const { value } = e.target;
-    // Convert the string input into an array by splitting on commas and trimming whitespace
     const featuresArray = value.split(',').map((feature) => feature.trim());
     setCarDetails((prevDetails) => ({
       ...prevDetails,
@@ -40,7 +39,6 @@ const AddCar = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Format the available_date and post_date to 'YYYY-MM-DD'
     const formattedAvailableDate = format(carDetails.available_date, 'yyyy-MM-dd');
     const formattedPostDate = format(new Date(), 'yyyy-MM-dd');
 
@@ -138,7 +136,7 @@ const AddCar = () => {
               type="text"
               id="features"
               name="features"
-              value={carDetails.features.join(', ')} // Display as a comma-separated string
+              value={carDetails.features.join(', ')}
               onChange={handleFeaturesChange}
               className="p-3 border rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="e.g., GPS, AC"

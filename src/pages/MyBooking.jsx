@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import useAuth from '../hooks/useAuth';
+import { Helmet } from 'react-helmet';
 
 const MyBooking = () => {
     const [bookings, setBookings] = useState([]);
@@ -83,6 +84,9 @@ const MyBooking = () => {
 
     return (
         <div className="container mx-auto p-5">
+            <Helmet>
+                <title>Rent A Car || My Bookings</title>
+            </Helmet>
             <h2 className="text-3xl font-bold mb-5 text-center">My Bookings</h2>
             <div className="overflow-x-auto">
                 <table className="table w-full border-collapse border border-gray-200">
@@ -139,8 +143,7 @@ const MyBooking = () => {
                     </tbody>
                 </table>
             </div>
-
-            {/* Modify Booking Modal */}
+            {/* update your Booking */}
             {selectedBooking && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="bg-white p-6 rounded shadow-lg">

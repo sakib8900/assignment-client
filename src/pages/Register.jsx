@@ -38,7 +38,7 @@ const Register = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    // Form submission handler
+    // submit form
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);

@@ -14,7 +14,6 @@ const CarDetails = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch car details based on the car ID
     fetch(`http://localhost:5000/cars/${id}`)
       .then((res) => res.json())
       .then((data) => {
@@ -46,7 +45,7 @@ const CarDetails = () => {
       return;
     }
 
-    // Booking request
+    // Booking
     const bookingDetails = {
       userEmail: user.email,
       carId: car._id,
@@ -114,13 +113,10 @@ const CarDetails = () => {
 
         {/* Car Details */}
         <div className="flex-1">
-          {/* Car Information */}
           <div className="mb-4">
             <h3 className="text-2xl font-semibold text-gray-800">Car Details</h3>
             <p className="text-lg text-gray-600 mt-2">{car.description}</p>
           </div>
-
-          {/* Additional Details */}
           <div className="mb-4">
             <div className="flex items-center gap-2 text-gray-600">
               <FaCarSide size={20} />
@@ -131,8 +127,6 @@ const CarDetails = () => {
               <span>Available for rent: {car.available_date}</span>
             </div>
           </div>
-
-          {/* Features */}
           <div className="mb-4">
             <h4 className="text-xl font-semibold text-gray-800">Features</h4>
             <ul className="list-disc pl-5 mt-2 text-gray-600">
@@ -142,7 +136,7 @@ const CarDetails = () => {
             </ul>
           </div>
 
-          {/* Booking Information */}
+          {/* Booking Info */}
           <div className="mb-4">
             <h4 className="text-xl font-semibold text-gray-800">Booking Information</h4>
             <div className="flex flex-col lg:flex-row gap-4 mt-2">
@@ -161,7 +155,7 @@ const CarDetails = () => {
             </div>
           </div>
 
-          {/* Total Price & Booking Button */}
+          {/* Total Price*/}
           <div className="mt-6 flex flex-col lg:flex-row justify-between items-center gap-4">
             <div className="text-xl font-semibold text-gray-600">
               Total Price: ${calculateTotalPrice()}

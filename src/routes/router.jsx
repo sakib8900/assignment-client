@@ -5,12 +5,11 @@ import MainLayout from "../layout/MainLayout";
 import Home from "../pages/Home";
 import Error from "../components/error/Error";
 import Register from "../pages/Register";
-import Login from "../pages/login";
+import Login from "../pages/Login";
 import AvailableCars from "../pages/cars/AvailableCars";
 import CarsDetails from "../pages/cars/CarsDetails";
 import PrivateRoute from "../utilitis/PrivateRoute";
 import AddCar from "../form/AddCar";
-import Booking from "../form/Booking";
 import MyBooking from "../pages/MyBooking";
 import MyCars from "../pages/cars/MyCars";
 
@@ -43,11 +42,15 @@ const router = createBrowserRouter([
       },
       {
         path: "/addCar",
-        element: <AddCar></AddCar>
+        element: <PrivateRoute>
+          <AddCar></AddCar>
+        </PrivateRoute>
       },
       {
         path: "/myCars",
-        element: <MyCars></MyCars>
+        element: <PrivateRoute>
+          <MyCars></MyCars>
+        </PrivateRoute>
       },
       {
         path: "/cars/:id",
