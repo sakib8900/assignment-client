@@ -3,6 +3,7 @@ import { MdViewModule, MdViewList } from "react-icons/md";
 import AvailableCar from "./AvailableCar";
 import { Helmet } from "react-helmet";
 import Loading from "../../utilitis/Loading";
+import { p } from "framer-motion/client";
 
 const AvailableCars = () => {
   const [cars, setCars] = useState([]);
@@ -43,7 +44,6 @@ const AvailableCars = () => {
     if (sortOption === "highest") return b.daily_price - a.daily_price;
     return 0;
   });
-
   if (loading) {
     return <Loading />;
   }
@@ -58,7 +58,7 @@ const AvailableCars = () => {
         {/* Search Bar */}
         <input
           type="text"
-          placeholder="Search by model, brand, or location..."
+          placeholder="Search"
           className="border p-2 rounded w-full max-w-xs bg-gray-800 text-white mb-3 md:mb-0"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
