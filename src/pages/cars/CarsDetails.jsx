@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
 import { FaCarSide, FaCalendarAlt } from "react-icons/fa";
+import Loading from "../../utilitis/Loading";
 
 const CarDetails = () => {
   const { id } = useParams();
@@ -87,11 +88,7 @@ const CarDetails = () => {
   };
 
   if (loading) {
-    return <div className="text-center mt-20 text-lg">Loading...</div>;
-  }
-
-  if (!car) {
-    return <div className="text-center mt-20 text-lg">Car not found!</div>;
+    return <Loading></Loading>
   }
 
   return (

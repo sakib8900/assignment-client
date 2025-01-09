@@ -3,6 +3,7 @@ import useAuth from '../hooks/useAuth';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
+import Swal from 'sweetalert2';
 
 const AddCar = () => {
   const { user } = useAuth();
@@ -63,6 +64,27 @@ const AddCar = () => {
       });
 
       const result = await response.json();
+      Swal.fire({
+        icon: 'success',
+        title: 'Car Added Successfully!',
+        text: `The car "${carDetails.model}" has been added.`,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6',
+      });
+
+      // Reset form
+      setCarDetails({
+        model: '',
+        daily_price: '',
+        availability: true,
+        registration_number: '',
+        features: [],
+        description: '',
+        booking_count: 0,
+        car_image: '',
+        location: '',
+        available_date: new Date(),
+      });
       console.log('Car added:', result);
     } catch (error) {
       console.error('Error adding car:', error);

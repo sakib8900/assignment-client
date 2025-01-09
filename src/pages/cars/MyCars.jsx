@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { MdEdit, MdDelete } from "react-icons/md"; // Importing icons
-import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import Swal from 'sweetalert2';
 import { Helmet } from "react-helmet";
@@ -20,9 +19,7 @@ const MyCars = () => {
             fetch(`https://assignment-11-server-one-lemon.vercel.app/cars?userEmail=${user.email}`)
                 .then((res) => res.json())
                 .then((data) => {
-                    const filteredCars = data.filter(
-                        (car) => car.user.email === user.email
-                    );
+                    const filteredCars = data.filter((car) => car.user.email === user.email);
                     setCars(filteredCars);
                     setLoading(false);
                 })
@@ -70,8 +67,14 @@ const MyCars = () => {
             location: e.target.location.value,
         };
 
-        axios
-            .put(`https://assignment-11-server-one-lemon.vercel.app/cars/${selectedCar._id}`, updatedCar)
+        fetch(`https://assignment-11-server-one-lemon.vercel.app/cars/${selectedCar._id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedCar),
+        })
+            .then((res) => res.json())
             .then(() => {
                 setCars(
                     cars.map((car) =>
@@ -80,12 +83,11 @@ const MyCars = () => {
                 );
                 closeModal();
 
-                // Show SweetAlert success message
                 Swal.fire({
                     icon: 'success',
                     title: 'Car updated successfully!',
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 1500,
                 });
             })
             .catch((error) => {
@@ -97,9 +99,10 @@ const MyCars = () => {
                 });
             });
     };
+
     if (loading) {
-        return <Loading></Loading>
-      }
+        return <Loading />;
+    }
 
     // Delete car
     const handleDelete = (id) => {
@@ -112,8 +115,10 @@ const MyCars = () => {
             cancelButtonText: 'Cancel',
         }).then((result) => {
             if (result.isConfirmed) {
-                axios
-                    .delete(`https://assignment-11-server-one-lemon.vercel.app/cars/${id}`)
+                fetch(`https://assignment-11-server-one-lemon.vercel.app/cars/${id}`, {
+                    method: "DELETE",
+                })
+                    .then((res) => res.json())
                     .then(() => {
                         setCars(cars.filter((car) => car._id !== id));
                         Swal.fire(
@@ -139,10 +144,10 @@ const MyCars = () => {
             <Helmet>
                 <title>Rent A Car || My Cars</title>
             </Helmet>
-            <h1 className="text-2xl font-bold mb-5">My Cars</h1>
+            <h1 className="text-2xl font-bold mb-5 text-center">My Cars</h1>
             {/* Sorting Options */}
             <select
-                className="border p-2 mb-5 rounded"
+                className="border p-2 mb-5 rounded w-full md:w-1/3"
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value)}
             >
@@ -153,52 +158,53 @@ const MyCars = () => {
             </select>
 
             {/* Cars Table */}
-            <table className="table-auto w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr className="bg-gray-200">
-                        <th className="border p-2">Image</th>
-                        <th className="border p-2">Model</th>
-                        <th className="border p-2">Price</th>
-                        <th className="border p-2">Location</th>
-                        <th className="border p-2">Date Added</th>
-                        <th className="border p-2">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {sortedCars.map((car) => (
-                        <tr key={car._id} className="text-center">
-                            <td className="border p-2">
-                                <img
-                                    src={car.car_image}
-                                    alt={car.model}
-                                    className="w-16 h-16 object-cover"
-                                />
-                            </td>
-                            <td className="border p-2">{car.model}</td>
-                            <td className="border p-2">${car.daily_price}/day</td>
-                            <td className="border p-2">{car.location}</td>
-                            <td className="border p-2">
-                                {new Date(car.post_date).toLocaleDateString()}
-                            </td>
-                            <td className="border p-2 space-x-3">
-                                <button
-                                    onClick={() => openModal(car)}
-                                    className="text-blue-500"
-                                >
-                                    <MdEdit size={24} />
-                                </button>
-                                <button
-                                    onClick={() => handleDelete(car._id)}
-                                    className="text-red-500"
-                                >
-                                    <MdDelete size={24} />
-                                </button>
-                            </td>
+            <div className="overflow-x-auto">
+                <table className="table-auto w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr className="bg-gray-200">
+                            <th className="border p-2">Image</th>
+                            <th className="border p-2">Model</th>
+                            <th className="border p-2">Price</th>
+                            <th className="border p-2">Location</th>
+                            <th className="border p-2">Date Added</th>
+                            <th className="border p-2">Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-
+                    </thead>
+                    <tbody>
+                        {sortedCars.map((car) => (
+                            <tr key={car._id} className="text-center">
+                                <td className="border p-2">
+                                    <img
+                                        src={car.car_image}
+                                        alt={car.model}
+                                        className="w-16 h-16 object-cover mx-auto"
+                                    />
+                                </td>
+                                <td className="border p-2">{car.model}</td>
+                                <td className="border p-2">${car.daily_price}/day</td>
+                                <td className="border p-2">{car.location}</td>
+                                <td className="border p-2">
+                                    {new Date(car.post_date).toLocaleDateString()}
+                                </td>
+                                <td className="border p-2 space-x-3">
+                                    <button
+                                        onClick={() => openModal(car)}
+                                        className="text-blue-500"
+                                    >
+                                        <MdEdit size={24} />
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(car._id)}
+                                        className="text-red-500"
+                                    >
+                                        <MdDelete size={24} />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
             {/* Update Modal */}
             {isModalOpen && (
                 <div className="modal modal-open">
@@ -213,7 +219,6 @@ const MyCars = () => {
                                 placeholder="Car Model"
                                 className="input input-bordered w-full mb-4"
                             />
-
                             {/* Daily Rental Price */}
                             <input
                                 type="number"
@@ -222,7 +227,6 @@ const MyCars = () => {
                                 placeholder="Daily Rental Price"
                                 className="input input-bordered w-full mb-4"
                             />
-
                             {/* Availability */}
                             <div className="mb-4 flex items-center">
                                 <label className="mr-2">Available</label>
@@ -233,9 +237,6 @@ const MyCars = () => {
                                     className="checkbox checkbox-primary"
                                 />
                             </div>
-
-
-
                             {/* Vehicle Registration Number */}
                             <input
                                 type="text"
@@ -244,7 +245,6 @@ const MyCars = () => {
                                 placeholder="Registration Number"
                                 className="input input-bordered w-full mb-4"
                             />
-
                             {/* Features */}
                             <input
                                 type="text"
@@ -253,7 +253,6 @@ const MyCars = () => {
                                 placeholder="Features (e.g., GPS, AC)"
                                 className="input input-bordered w-full mb-4"
                             />
-
                             {/* Description */}
                             <textarea
                                 name="description"
@@ -261,7 +260,6 @@ const MyCars = () => {
                                 placeholder="Description"
                                 className="textarea textarea-bordered w-full mb-4"
                             ></textarea>
-
                             {/* Image URL */}
                             <input
                                 type="url"
@@ -270,7 +268,6 @@ const MyCars = () => {
                                 placeholder="Image URL"
                                 className="input input-bordered w-full mb-4"
                             />
-
                             {/* Location */}
                             <input
                                 type="text"
@@ -279,7 +276,6 @@ const MyCars = () => {
                                 placeholder="Location"
                                 className="input input-bordered w-full mb-4"
                             />
-
                             <div className="modal-action">
                                 <button type="submit" className="btn btn-primary">
                                     Save
