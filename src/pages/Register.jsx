@@ -12,7 +12,7 @@ const Register = () => {
     const navigate = useNavigate();
     const auth = getAuth();
 
-    // Validation function
+    // Validation
     const validate = (formData) => {
         const newErrors = {};
         const passwordRegex = /^(?=.*[A-Z])(?=.*[@#$%^&+=]).{6,}$/;
@@ -33,11 +33,9 @@ const Register = () => {
         if (!formData.photoUrl) {
             newErrors.photoUrl = "Photo URL is required.";
         }
-
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
-
     // submit form
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -159,6 +157,3 @@ const Register = () => {
 };
 
 export default Register;
-
-
-// Password@1

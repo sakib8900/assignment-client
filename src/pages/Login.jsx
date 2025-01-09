@@ -4,7 +4,7 @@ import { useContext } from "react";
 import AuthContext from "../context/AuthContext/AuthContext";
 import SocialLogin from "./SocialLogin";
 import { useLocation, useNavigate } from "react-router-dom";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 
 const Login = () => {
     const { loginInUser } = useContext(AuthContext);

@@ -83,7 +83,7 @@ const CarDetails = () => {
   const calculateTotalPrice = () => {
     const start = new Date(startDateTime);
     const end = new Date(endDateTime);
-    const days = Math.ceil((end - start) / (1000 * 3600 * 24)); // Calculate the number of days
+    const days = Math.ceil((end - start) / (1000 * 3600 * 24));
     return days * car.daily_price;
   };
 

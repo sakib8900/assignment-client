@@ -5,23 +5,19 @@ import { Link } from "react-router-dom";
 const Banner = () => {
     return (
         <div className="relative w-full h-[75vh]">
-            {/* Video Background */}
+            {/* Background */}
             <video
                 src={video}
                 autoPlay
                 loop
                 muted
-                className="absolute top-0 left-0 w-full h-full object-cover z-0" // Video behind everything
+                className="absolute top-0 left-0 w-full h-full object-cover z-0"
             />
-
-            {/* Overlay Content */}
             <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-black/50 z-10">
                 {/* Heading */}
                 <h1 className="text-2xl md:text-4xl text-white font-bold text-center shadow-lg">
                     Drive Your Dreams Today!
                 </h1>
-
-                {/* Call-to-Action Button */}
                 <Link to="/availableCars">
                     <button
                         className="mt-6 px-8 py-3 backdrop-blur-md text-white text-lg font-semibold rounded-lg shadow-lg hover:bg-red-500 transition duration-300">

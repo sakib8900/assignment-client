@@ -95,7 +95,6 @@ const Navbar = () => {
                 <button onClick={darkModeHandler} className="btn btn-ghost">
                     {dark ? <IoSunny /> : <IoMoon />}
                 </button>
-
                 {/* Profile & Dropdown */}
                 {user && (
                     <div className="dropdown relative z-20">

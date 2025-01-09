@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { MdEdit, MdDelete } from "react-icons/md"; // Importing icons
+import { MdEdit, MdDelete } from "react-icons/md";
 import useAuth from "../../hooks/useAuth";
 import Swal from 'sweetalert2';
 import { Helmet } from "react-helmet";
@@ -237,7 +237,7 @@ const MyCars = () => {
                                     className="checkbox checkbox-primary"
                                 />
                             </div>
-                            {/* Vehicle Registration Number */}
+                            {/*Registration Number */}
                             <input
                                 type="text"
                                 name="registration_number"
@@ -278,7 +278,7 @@ const MyCars = () => {
                             />
                             <div className="modal-action">
                                 <button type="submit" className="btn btn-primary">
-                                    Save
+                                    Post
                                 </button>
                                 <button
                                     type="button"
