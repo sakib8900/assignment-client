@@ -1,22 +1,22 @@
-# 🎮 Game Review Website  
+# 🚗 Rent A Car  
 
-A **dynamic** game review platform where users can **sign up, post reviews, edit, and delete their reviews**. All user-submitted reviews are publicly visible, creating an engaging community-driven review space.  
+A **responsive** car rental platform that allows users to **rent cars, add listings, book vehicles**, and manage bookings easily. Supports **Google authentication** for secure login and personalized experiences.  
 
 ## 📌 Live Demo  
-🔗 **Visit Website:** [Game Review Website](https://assiengment-11.firebaseapp.com/)  
+🔗 **Visit Website:** [Rent A Car](https://assiengment-11.firebaseapp.com/)  
 
 ---
 
 ## 📖 Overview  
-The **Game Review Website** allows users to **share their thoughts on games**, providing feedback and ratings. Users can create an account, add reviews, edit their previous reviews, and explore reviews from others.  
+The **Rent A Car** website enables users to conveniently **rent vehicles**, **add car listings**, and **manage bookings**. Designed with **responsiveness** in mind, it works seamlessly across both **mobile** and **desktop** devices.  
 
 ### 🚀 Features  
-- ✅ **User Authentication** – Sign up and log in with Firebase Authentication.  
-- ✅ **Post Reviews** – Add your game reviews, including ratings and comments.  
-- ✅ **Edit & Delete Reviews** – Manage your reviews anytime.  
-- ✅ **View All Reviews** – Explore game reviews from other users.  
-- ✅ **Interactive UI** – Built with **React, Tailwind CSS, and DaisyUI** for a modern and sleek design.  
-- ✅ **Smooth Animations** – Powered by **Animate.css** and **AOS** for a better user experience.  
+- ✅ **User Authentication** – Register and log in using Google authentication.  
+- ✅ **Car Listings** – Add and manage your car listings for rental.  
+- ✅ **Booking Management** – Book vehicles and manage booking details effortlessly.  
+- ✅ **Responsive Design** – Fully functional on both **mobile** and **desktop** devices.  
+- ✅ **Interactive Animations** – Enhanced user experience with **Framer Motion** and **Lottie Animations**.  
+- ✅ **Real-time Updates** – All changes are immediately reflected in the UI.  
 
 ---
 
@@ -25,16 +25,16 @@ The **Game Review Website** allows users to **share their thoughts on games**, p
 ### 🔹 **Frontend:**  
 - ⚛️ **React.js**  
 - 🎨 **Tailwind CSS & DaisyUI**  
-- 🌟 **React Icons & React Star Ratings**  
-- ✨ **Animate.css & AOS (Animations)**  
-- 🔄 **React Router DOM**  
+- 🌐 **React Router DOM**  
+- 📅 **React Datepicker** (for booking dates)  
+- 🌀 **Framer Motion & Lottie** (for animations)  
 
 ### 🔹 **Backend & Database:**  
 - 🔥 **Firebase Authentication & Firestore Database**  
 
 ### 🔹 **Third-Party Services:**  
-- ⭐ **React Rating Stars Component** (For rating system)  
-- 🍭 **SweetAlert2** (For better alerts and pop-ups)  
+- 📦 **Axios** (for API requests)  
+- 🍭 **SweetAlert2** (for alerts and confirmations)  
 
 ---
 
